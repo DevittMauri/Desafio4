@@ -1,0 +1,7 @@
+Valor exacto de f(3): 554.0
+
+Resultados de las aproximaciones y errores:
+Orden 0: Aproximación = -62.000, Error relativo = 111.19%
+Orden 1: Aproximación = 78.000, Error relativo = 85.92%
+Orden 2: Aproximación = 354.000, Error relativo = 36.10%
+Orden 3: Aproximación = 554.000, Error relativo = 0.00%
