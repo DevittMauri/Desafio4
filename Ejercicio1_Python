@@ -1,0 +1,53 @@
+import sympy as sp
+
+# Definir la función y sus derivadas
+x = sp.Symbol('x')
+f = 25 * x**3 - 6 * x**2 + 7 * x - 88
+
+# Derivadas
+f_prime = sp.diff(f, x)         # Primera derivada
+f_double_prime = sp.diff(f_prime, x)  # Segunda derivada
+f_triple_prime = sp.diff(f_double_prime, x)  # Tercera derivada
+
+# Punto base y punto a evaluar
+a = 1  # Punto base
+x_val = 3  # Punto donde evaluamos
+
+# Evaluar la función y sus derivadas en el punto base
+f_a = f.subs(x, a)
+f_prime_a = f_prime.subs(x, a)
+f_double_prime_a = f_double_prime.subs(x, a)
+f_triple_prime_a = f_triple_prime.subs(x, a)
+
+# Valor exacto de f(3)
+f_exact = f.subs(x, x_val)
+
+# Calcular las aproximaciones de Taylor
+approximations = []
+
+# Orden 0 (Constante)
+taylor_0 = f_a
+approximations.append(taylor_0)
+
+# Orden 1 (Lineal)
+taylor_1 = taylor_0 + f_prime_a * (x_val - a)
+approximations.append(taylor_1)
+
+# Orden 2 (Cuadrático)
+taylor_2 = taylor_1 + (f_double_prime_a / 2) * (x_val - a)**2
+approximations.append(taylor_2)
+
+# Orden 3 (Cúbico)
+taylor_3 = taylor_2 + (f_triple_prime_a / 6) * (x_val - a)**3
+approximations.append(taylor_3)
+
+# Calcular los errores relativos porcentuales
+errors = [
+    float(abs((f_exact - approx) / f_exact) * 100) for approx in approximations
+]
+
+# Mostrar resultados
+print("Valor exacto de f(3):", float(f_exact))
+print("\nResultados de las aproximaciones y errores:")
+for i, (approx, error) in enumerate(zip(approximations, errors)):
+    print(f"Orden {i}: Aproximación = {float(approx):.3f}, Error relativo = {error:.2f}%")
