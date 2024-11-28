@@ -1,0 +1,52 @@
+import math
+
+# Valores iniciales
+B = 20  # Ancho del canal (m)
+H = 0.3  # Profundidad del canal (m)
+n = 0.03  # Coeficiente de rugosidad
+S = 0.0003  # Pendiente
+
+# Variaciones (±10%)
+delta_n = n * 0.10
+delta_S = S * 0.10
+
+# Fórmula de Manning para calcular Q
+def calcular_Q(B, H, n, S):
+    BH = B * H
+    BH_5_3 = BH ** (5 / 3)
+    B_2H = B + 2 * H
+    B_2H_2_3 = B_2H ** (2 / 3)
+    sqrt_S = math.sqrt(S)
+    Q = (1 / n) * (BH_5_3 / B_2H_2_3) * sqrt_S
+    return Q
+
+# Derivadas parciales
+def sensibilidad_n(Q, n):
+    return -Q / n
+
+def sensibilidad_S(Q, S):
+    return Q / (2 * S)
+
+# Cálculo del flujo Q
+Q = calcular_Q(B, H, n, S)
+
+# Sensibilidades
+dQ_dn = sensibilidad_n(Q, n)
+dQ_dS = sensibilidad_S(Q, S)
+
+# Cambios absolutos
+delta_Q_n = abs(dQ_dn * delta_n)
+delta_Q_S = abs(dQ_dS * delta_S)
+
+# Resultados
+print(f"Flujo Q = {Q:.4f} m³/s")
+print(f"Sensibilidad respecto a n: dQ/dn = {dQ_dn:.4f}")
+print(f"Sensibilidad respecto a S: dQ/dS = {dQ_dS:.4f}")
+print(f"Cambio absoluto en Q debido a n (ΔQ_n): {delta_Q_n:.4f} m³/s")
+print(f"Cambio absoluto en Q debido a S (ΔQ_S): {delta_Q_S:.4f} m³/s")
+
+# Conclusión
+if delta_Q_n > delta_Q_S:
+    print("El coeficiente de rugosidad (n) tiene mayor impacto en la precisión del flujo.")
+else:
+    print("La pendiente (S) tiene mayor impacto en la precisión del flujo.")
