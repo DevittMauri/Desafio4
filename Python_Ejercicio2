@@ -1,0 +1,43 @@
+import math
+
+# Datos iniciales
+x_base = 1  # Punto base
+x = 2.5     # Punto donde se evalúa
+valor_verdadero = math.log(x)  # Valor real de ln(2.5)
+
+# Función para calcular los términos de la serie de Taylor
+def taylor_ln(x, x_base, orden_max):
+    aproximaciones = []
+    error_relativo = []
+    suma = 0  # Inicializamos la suma acumulativa
+
+    # Derivadas evaluadas en x = 1
+    derivadas = [0, 1, -1, 2, -6]  # f(1), f'(1), f''(1), f'''(1), f⁽⁴⁾(1)
+
+    for n in range(orden_max + 1):
+        # Cálculo del término de la serie de Taylor
+        if n == 0:
+            termino = derivadas[n] * (x - x_base) ** n / math.factorial(n)  # f(1) = 0
+        else:
+            termino = derivadas[n] * (x - x_base) ** n / math.factorial(n)
+        
+        # Acumulamos el término en la suma
+        suma += termino
+        aproximaciones.append(suma)
+
+        # Calculamos el error relativo porcentual
+        error = abs((valor_verdadero - suma) / valor_verdadero) * 100
+        error_relativo.append(error)
+    
+    return aproximaciones, error_relativo
+
+# Configuración del orden máximo
+orden_max = 4
+
+# Cálculo de aproximaciones y errores relativos
+aproximaciones, errores = taylor_ln(x, x_base, orden_max)
+
+# Mostrar resultados en tablas
+print("Orden\tAproximación\t\tError Relativo (%)")
+for i in range(orden_max + 1):
+    print(f"{i}\t{aproximaciones[i]:.6f}\t\t{errores[i]:.2f}")
